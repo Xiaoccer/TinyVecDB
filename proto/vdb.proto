@@ -1,0 +1,81 @@
+syntax = "proto3";
+package vdb.service;
+
+option cc_generic_services = true;
+
+/************************************************************************/
+/* Enumerations */
+/************************************************************************/
+enum IndexType {
+  IT_INVALID = 0;
+  IT_FLAT = 1;
+  IT_HNSW = 2;
+}
+
+/************************************************************************/
+/* FilterCondition */
+/************************************************************************/
+message FilterCondition {
+  string field = 1;
+  string op = 2;
+  int64 value = 3;
+}
+
+/************************************************************************/
+/* Upsert */
+/************************************************************************/
+message UpsertRequest {
+  repeated float vector = 1;
+  int64 id = 2;
+  uint32 index_type = 3;
+  map<string, int64> fields = 4;
+}
+
+/************************************************************************/
+/* Search */
+/************************************************************************/
+message SearchRequest {
+  repeated float vector = 1;
+  int32 k = 2;
+  uint32 index_type = 3;
+  FilterCondition condition = 4;
+}
+
+/************************************************************************/
+/* Query */
+/************************************************************************/
+message QueryRequest {
+  int64 id = 1;
+}
+
+/************************************************************************/
+/* Response */
+/************************************************************************/
+message EmptyResponse {
+  int32 ret_code = 1;
+  string msg = 2;
+}
+
+message SearchResponse {
+  int32 ret_code = 1;
+  string msg = 2;
+  repeated int64 indices = 3;
+  repeated float distances = 4;
+}
+
+message QueryResponse {
+  int32 ret_code = 1;
+  string msg = 2;
+  UpsertRequest upsert_data = 3;
+}
+
+/************************************************************************/
+/* VdbService */
+/************************************************************************/
+message HttpRequest {};
+
+message HttpResponse {};
+
+service VdbService {
+  rpc http(HttpRequest) returns (HttpResponse);
+};

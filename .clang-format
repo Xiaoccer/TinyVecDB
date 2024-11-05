@@ -1,0 +1,5 @@
+BasedOnStyle: Google
+DerivePointerAlignment: false
+IncludeBlocks: Merge
+SortIncludes: true
+ColumnLimit: 120

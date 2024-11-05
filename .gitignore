@@ -1,0 +1,10 @@
+.DS_Store
+.cache
+.clangd
+.vscode
+build
+compile_commands.json
+proto/build
+proto/src
+third_party/installed
+third_party/src

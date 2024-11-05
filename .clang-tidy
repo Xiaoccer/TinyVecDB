@@ -1,0 +1,26 @@
+Checks: '
+clang-analyzer-*,
+clang-diagnostic-*,
+google-*,
+modernize-*,
+performance-*,
+portability-*,
+-google-readability-avoid-underscore-in-googletest-name,
+-google-readability-casting,
+-modernize-avoid-c-arrays,
+-modernize-deprecated-headers,
+-modernize-make-unique,
+-modernize-return-braced-init-list,
+-modernize-use-equals-delete,
+-modernize-use-nodiscard,
+-modernize-use-trailing-return-type,
+'
+WarningsAsErrors: ''
+AnalyzeTemporaryDtors: false
+FormatStyle: '{
+BasedOnStyle: Google,
+DerivePointerAlignment: false,
+IncludeBlocks: Merge,
+SortIncludes: true,
+ColumnLimit: 120,
+}'
