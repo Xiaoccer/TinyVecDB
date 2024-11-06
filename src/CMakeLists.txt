@@ -27,9 +27,6 @@ set(WL_END_GROUP "-Wl,--end-group")
 # -lfaiss -fopenmp -lopenblas -lpthread -lspdlog
 
 set(LINK_LIBS ${LINK_LIBS}
-    -ldl
-    -lgfortran
-    -lstdc++fs
     ${WL_START_GROUP}
     -lfaiss
     -lopenblas
@@ -49,6 +46,9 @@ set(LINK_LIBS ${LINK_LIBS}
     -lroaring
     -lpthread
     ${WL_END_GROUP}
+    -lstdc++fs
+    -lgfortran
+    -ldl
 )
 
 # Include directories

@@ -92,7 +92,8 @@ function build_openblas() {
     cd ${TP_SOURCE_DIR}/${DIR}
     rm -rf build
     mkdir -p build
-    make -j ${PARALLEL} PREFIX=./build install
+    make -j ${PARALLEL}
+    make PREFIX=./build install
 
     mkdir -p ${TP_INCLUDE_DIR}/blas
     cp -r ./build/include/* ${TP_INCLUDE_DIR}/blas
@@ -394,7 +395,7 @@ function build_rocksdb() {
 
     cd ${TP_SOURCE_DIR}/${DIR}
     CFLAGS="-I ${TP_INCLUDE_DIR} -I ${TP_INCLUDE_DIR}/snappy -I ${TP_INCLUDE_DIR}/lz4" \
-    make USE_RTTI=1 -j ${PARALLEL} static_lib
+    LDFLAGS="-static-libstdc++ -static-libgcc" PORTABLE=1 make USE_RTTI=1 -j ${PARALLEL} static_lib
     cp librocksdb.a ${TP_LIB_DIR}/librocksdb.a
     cp -r include/rocksdb ${TP_INCLUDE_DIR}/
 }
@@ -418,7 +419,7 @@ function build_roaringbitmap() {
 
 PACKAGES=(
     "faiss"
-    #"hnswlib"
+    "hnswlib"
     #"rapidjson"
     #"httplib"
     #"spdlog"
