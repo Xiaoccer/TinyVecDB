@@ -20,20 +20,14 @@ set(LIB_LIST
     roaring
 )
 
-function(import_static_libraries lib_dir ...)
-    foreach(lib_name IN LISTS ARGV)
-        if(lib_name STREQUAL lib_dir)
-            continue()
-        endif()
-        set(lib_path "${lib_dir}/lib${lib_name}.a")
-        message(STATUS "Importing ${lib_name} ${lib_path}")
-        add_library(${lib_name} STATIC IMPORTED)
-        set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION ${lib_path})
+foreach(lib_name IN LISTS LIB_LIST)
+    set(lib_path ${STATIC_LIB_DIR}/lib${lib_name}.a)
+    message(STATUS "Importing ${lib_name} ${lib_path}")
+    add_library(${lib_name} STATIC IMPORTED)
+    set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION ${lib_path})
 
-        target_link_libraries(third_party_lib INTERFACE ${lib_name})
-    endforeach()
-endfunction()
+    target_link_libraries(third_party_lib INTERFACE ${lib_name})
+endforeach()
 
-import_static_libraries(${STATIC_LIB_DIR} ${LIB_LIST})
 
 set(THIRD_PARTY_LIB ${THIRD_PARTY_LIB} third_party_lib PARENT_SCOPE)
