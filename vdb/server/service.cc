@@ -4,10 +4,9 @@
 #include <gen_cpp/vdb.pb.h>
 #include <glog/logging.h>
 #include <google/protobuf/stubs/status.h>
-#include <google/protobuf/util/json_util.h>
 #include <stddef.h>
-#include <iomanip>
 #include <sstream>
+#include <string>
 #include "db/database.h"
 #include "util/util.h"
 
@@ -62,7 +61,7 @@ ResponseMsg UpsertHandler(brpc::Controller* cntl, Database* database) {
     return resp;
   }
 
-  if (!database->WriteWALLog(Persistence::WT_UPSERT, PbToJsonStr(req))) {
+  if (!database->WriteWALLog(Database::WT_UPSERT, PbToJsonStr(req))) {
     LOG(WARNING) << "Failed to write wal log.";
     resp.set_ret_code(400);
     resp.set_msg("Failed to write wal log");
@@ -117,7 +116,7 @@ ResponseMsg SearchHandler(brpc::Controller* cntl, Database* database) {
   opts.filter_field = req.condition().field();
   opts.filter_op = req.condition().op();
   opts.filter_value = req.condition().value();
-  Index::SearchRes res;
+  Database::SearchResult res;
   if (!database->Search(opts, &res)) {
     LOG(WARNING) << "Failed to search.";
     resp.set_ret_code(400);

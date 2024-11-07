@@ -33,7 +33,7 @@ include_directories(${VDB_INCLUDE_DIR})
 include_directories(SYSTEM ${THIRD_PARTY_INCLUDE_DIR} ${PROTOS_INCLUDE_DIR})
 
 ##########################################
-# Thiry party libs && proto libs
+# Third party lib && proto lib
 ##########################################
 set(THIRD_PARTY_LIB)
 set(PROTO_LIB)

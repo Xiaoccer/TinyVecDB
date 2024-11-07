@@ -1,8 +1,9 @@
 #pragma once
 
+#include <gen_cpp/vdb.pb.h>
 #include <memory>
+#include <string>
 #include <unordered_map>
-#include "gen_cpp/vdb.pb.h"
 #include "index/index.h"
 
 namespace vdb {

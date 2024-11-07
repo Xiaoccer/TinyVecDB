@@ -1,12 +1,10 @@
 #include "bitmap/field_bitmap.h"
 #include <glog/logging.h>
 #include <stddef.h>
-#include <stdint.h>
-#include <memory>
+#include <cstring>
 #include <optional>
 #include <sstream>
-#include <vector>
-#include "util/util.h"
+#include <utility>
 
 namespace vdb {
 
@@ -60,6 +58,16 @@ roaring_bitmap_ptr FieldBitmap::GetBitmap(const std::string& field_name, int64_t
   return bitmap;
 }
 
+/**
+ *
+ * Format of each record:
+ * ----------------------------------------------------------------------------
+ * | TotalSize (8) | FieldNameSize (8) | FieldNameData  | Value (8) |
+ * ----------------------------------------------------------------------------
+ * | BitmapSize (8) | BitmapData |
+ * ----------------------------------------------------------------------------
+ *
+ */
 std::string FieldBitmap::SerializeToString() {
   std::ostringstream oss;
   for (const auto& field_entry : field_bitmap_) {
@@ -76,10 +84,12 @@ std::string FieldBitmap::SerializeToString() {
       std::string data;
       data.resize(size);
       roaring_bitmap_portable_serialize(bitmap, data.data());
+
+      // FieldNameSize(8) +  FieldNameData + Value(8)  + BitmapSize(8) + BitmapData
       uint64_t total_size = 8 + field_name.size() + 8 + 8 + data.size();
 
       std::string buf;
-      buf.resize(total_size + 8 - data.size());
+      buf.resize(total_size + 8 /* TotalSize(8) */ - data.size());
       size_t offset = 0;
       std::memcpy(buf.data() + offset, &total_size, 8);
       offset += 8;
@@ -130,10 +140,8 @@ bool FieldBitmap::ParseFromString(const std::string& data) {
     offset += data_size;
 
     roaring_bitmap_ptr p(roaring_bitmap_portable_deserialize(bitmap_str.data()), roaring_bitmap_free);
-    LOG(INFO) << field_name << " " << value;
     field_bitmap_[field_name][value] = std::move(p);
   }
-
   return true;
 }
 

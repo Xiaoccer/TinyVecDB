@@ -1,8 +1,6 @@
 #include "index/index_factory.h"
 #include <glog/logging.h>
-#include <string>
-#include "gen_cpp/vdb.pb.h"
-#include "index/index.h"
+#include <utility>
 
 namespace vdb {
 

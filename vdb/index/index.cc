@@ -6,15 +6,15 @@
 #include <faiss/impl/IDSelector.h>
 #include <faiss/index_io.h>
 #include <hnswlib/hnswlib.h>
-#include <stdint.h>
-#include <memory>
+#include <fstream>
+#include <stdexcept>
 
 namespace vdb {
 
 namespace {
 
 /************************************************************************/
-/* RoaringBitmap classes */
+/* RoaringBitmap class */
 /************************************************************************/
 class FaissRoaringBitmapIDSelector : public faiss::IDSelector {
  private:
@@ -65,7 +65,7 @@ class FaissIndex : public Index {
     index_->add_with_ids(1, opts.data, &id);
   }
 
-  SearchRes Search(const SearchOptions& opts) override {
+  SearchResult Search(const SearchOptions& opts) override {
     int dim = index_->d;
     int num_queries = opts.size / dim;
     std::vector<faiss::idx_t> indices(num_queries * opts.k);
@@ -102,7 +102,6 @@ class FaissIndex : public Index {
       index_.reset(faiss::read_index(path.c_str()));
       return true;
     }
-    // 空 `database` 启动时，没有对应文件。
     return true;
   }
 };
@@ -131,7 +130,7 @@ class HNSWLibIndex : public Index {
  public:
   void Insert(const InsertOptions& opts) override { index_->addPoint(opts.data, opts.label); }
 
-  SearchRes Search(const SearchOptions& opts) override {
+  SearchResult Search(const SearchOptions& opts) override {
     index_->setEf(opts.ef_search);
 
     HNSWRoaringBitmapIDFilter selector(opts.bitmap);
@@ -166,7 +165,6 @@ class HNSWLibIndex : public Index {
       index_->loadIndex(path, space_.get());
       return true;
     }
-    // 空 `database` 启动时，没有对应文件。
     return true;
   }
 };

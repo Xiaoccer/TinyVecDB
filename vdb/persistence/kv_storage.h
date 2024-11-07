@@ -1,9 +1,8 @@
 #pragma once
 
-#include <rocksdb/db.h>
+#include <memory>
 #include <string>
 #include <string_view>
-#include <vector>
 
 namespace vdb {
 
@@ -19,10 +18,18 @@ class KVStorage {
   };
 
  private:
-  rocksdb::DB* db_{nullptr};
+  class Impl;
+  std::unique_ptr<Impl> impl_;
 
  public:
+  KVStorage();
   ~KVStorage();
+
+ public:
+  KVStorage(const KVStorage&) = delete;
+  KVStorage(KVStorage&&) = delete;
+  KVStorage& operator=(const KVStorage&) = delete;
+  KVStorage& operator=(KVStorage&&) = delete;
 
  public:
   [[nodiscard]] bool Init(const std::string& path);

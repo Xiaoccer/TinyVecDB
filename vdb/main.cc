@@ -9,7 +9,8 @@ DEFINE_string(listen_addr, "",
 DEFINE_int32(idle_timeout_s, -1,
              "Connection will be closed if there is no "
              "read/write operations during the last `idle_timeout_s'");
-DEFINE_int32(dim, 1, "");
+DEFINE_int32(vec_dim, 1, "Dimension of each vector");
+DEFINE_string(persistence_path, "./storage/", "Path to store persistent data");
 
 int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);
@@ -30,7 +31,9 @@ int main(int argc, char* argv[]) {
 
   vdb::VdbServer server;
   vdb::VdbServer::InitOptions opts;
-  opts.opts.persistence_path = "./Storage/";
+  auto db_opts = &opts.db_opts;
+  db_opts->persistence_path = FLAGS_persistence_path;
+  db_opts->dim = FLAGS_vec_dim;
   if (!server.Init(opts)) {
     LOG(ERROR) << "Fail to init VdbServer.";
     return -1;

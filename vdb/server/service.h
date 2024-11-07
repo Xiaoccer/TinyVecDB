@@ -1,7 +1,7 @@
 #pragma once
 
+#include <gen_cpp/vdb.pb.h>
 #include "db/database.h"
-#include "gen_cpp/vdb.pb.h"
 
 namespace vdb {
 

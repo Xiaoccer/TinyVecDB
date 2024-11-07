@@ -1,8 +1,10 @@
 #pragma once
 
 #include <roaring/roaring.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace vdb {
@@ -27,7 +29,7 @@ class Index {
     const roaring_bitmap_t* bitmap{nullptr};
   };
 
-  struct SearchRes {
+  struct SearchResult {
     std::vector<int64_t> indices;
     std::vector<float> distances;
   };
@@ -42,7 +44,7 @@ class Index {
 
  public:
   virtual void Insert(const InsertOptions& opts) = 0;
-  [[nodiscard]] virtual SearchRes Search(const SearchOptions& opts) = 0;
+  [[nodiscard]] virtual SearchResult Search(const SearchOptions& opts) = 0;
   virtual void Remove(const std::vector<int64_t>& ids) = 0;
   [[nodiscard]] virtual bool Save(const std::string& path) = 0;
   [[nodiscard]] virtual bool Load(const std::string& path) = 0;

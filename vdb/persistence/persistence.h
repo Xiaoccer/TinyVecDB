@@ -1,7 +1,9 @@
 #pragma once
 
-#include <cstdint>
-#include <fstream>
+#include <stdint.h>
+#include <memory>
+#include <string>
+#include <string_view>
 #include "bitmap/field_bitmap.h"
 #include "index/index_factory.h"
 #include "persistence/kv_storage.h"
@@ -20,45 +22,32 @@ namespace vdb {
 /************************************************************************/
 class Persistence {
  public:
-  enum WAL_TYPE : char {
-    WT_NONE = 0,
-    WT_UPSERT = 1,
-    WT_MAX = 2,
-  };
-
-  inline static const std::string WT_2_STRING[WT_MAX] = {
-      "NONE",    //
-      "UPSERT",  // WT_UPSERT
-  };
-
-  enum WAL_STATUS {
-    WS_OK = 0,
-    WS_END = 1,
-    WS_ERROR = 2,
+  enum LOG_STATUS {
+    LS_OK = 0,
+    LS_END = 1,
+    LS_ERROR = 2,
   };
 
  private:
-  uint64_t log_id_{1};
-  uint64_t last_snapshot_id_{0};
-  uint8_t version_;
-
-  fs::path wal_path_;
-  fs::path kv_storage_path_;
-  fs::path snapshot_path_;
-  std::fstream wal_log_file_;
-
-  KVStorage kv_storage_;
+  class Impl;
+  std::unique_ptr<Impl> impl_;
 
  public:
-  Persistence() = default;
+  Persistence();
   ~Persistence();
+
+ public:
+  Persistence(const Persistence&) = delete;
+  Persistence(Persistence&&) = delete;
+  Persistence& operator=(const Persistence&) = delete;
+  Persistence& operator=(Persistence&&) = delete;
 
  public:
   [[nodiscard]] bool Init(const std::string& path, uint8_t version);
 
  public:
-  [[nodiscard]] bool WriteWALLog(WAL_TYPE wt, const std::string& data);
-  [[nodiscard]] WAL_STATUS ReadNextWALLog(WAL_TYPE* wt, std::string* data);
+  [[nodiscard]] bool WriteWALLog(char op, const std::string& data);
+  [[nodiscard]] LOG_STATUS ReadNextWALLog(char* op, std::string* data);
 
  public:
   [[nodiscard]] bool Put(std::string_view key, std::string_view value);

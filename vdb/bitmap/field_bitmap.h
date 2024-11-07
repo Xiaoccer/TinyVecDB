@@ -1,7 +1,9 @@
 #pragma once
 
 #include <roaring/roaring.h>
+#include <stdint.h>
 #include <memory>
+#include <string>
 #include <unordered_map>
 
 namespace vdb {

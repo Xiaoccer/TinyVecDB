@@ -13,7 +13,7 @@ namespace vdb {
 class VdbServer : public brpc::Server {
  public:
   struct InitOptions {
-    Database::InitOptions opts;
+    Database::InitOptions db_opts;
   };
 
  private:
