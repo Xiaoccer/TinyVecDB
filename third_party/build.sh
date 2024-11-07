@@ -65,7 +65,7 @@ echo "INCLUDE_DIR: ${TP_INCLUDE_DIR}"
 echo "LID_DIR: ${TP_LIB_DIR}"
 echo "PATCH_DIR: ${TP_PATCH_DIR}"
 
-# Todo: 检查编译工具和相关版本
+# TODO: 检查编译工具和相关版本
 
 function check_md5() {
     local FILE=$1

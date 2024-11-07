@@ -1,4 +1,4 @@
-#include "index.h"
+#include "index/index.h"
 #include <faiss/Index.h>
 #include <faiss/IndexFlat.h>
 #include <faiss/IndexIDMap.h>
@@ -6,7 +6,7 @@
 #include <faiss/impl/IDSelector.h>
 #include <faiss/index_io.h>
 #include <hnswlib/hnswlib.h>
-#include <cstdint>
+#include <stdint.h>
 #include <memory>
 
 namespace vdb {

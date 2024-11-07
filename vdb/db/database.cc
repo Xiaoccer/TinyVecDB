@@ -1,11 +1,11 @@
-#include "database.h"
-#include <gen_cpp/vdb.pb.h>
+#include "db/database.h"
 #include <glog/logging.h>
 #include <string>
-#include "field_bitmap.h"
-#include "kv_storage.h"
-#include "persistence.h"
-#include "util.h"
+#include "bitmap/field_bitmap.h"
+#include "gen_cpp/vdb.pb.h"
+#include "persistence/kv_storage.h"
+#include "persistence/persistence.h"
+#include "util/util.h"
 
 namespace vdb {
 

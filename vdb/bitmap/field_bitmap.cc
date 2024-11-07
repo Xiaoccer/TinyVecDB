@@ -1,11 +1,12 @@
-#include "field_bitmap.h"
+#include "bitmap/field_bitmap.h"
 #include <glog/logging.h>
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <vector>
-#include "util.h"
+#include "util/util.h"
 
 namespace vdb {
 
@@ -69,7 +70,6 @@ std::string FieldBitmap::SerializeToString() {
       int64_t value = value_entry.first;
       const roaring_bitmap_t* bitmap = value_entry.second.get();
       if (roaring_bitmap_is_empty(bitmap)) {
-        LOG(INFO) << "here";
         continue;
       }
       size_t size = roaring_bitmap_portable_size_in_bytes(bitmap);
@@ -99,7 +99,6 @@ std::string FieldBitmap::SerializeToString() {
       offset += 8;
 
       oss << buf << data;
-      LOG(INFO) << "temp: " << oss.str();
     }
   }
   return oss.str();
@@ -135,21 +134,6 @@ bool FieldBitmap::ParseFromString(const std::string& data) {
     field_bitmap_[field_name][value] = std::move(p);
   }
 
-  // (void)data;
-  // std::string d = "bbb||11|0\naaa|20|:0\n";
-  // std::istringstream iss(d);
-  // for (std::string line; std::getline(iss, line, '\n');) {
-  //   // std::istringstream line_iss(line);
-  //   LOG(INFO) << "temp2: " << line;
-  //   LOG(INFO) << "temp: " << d;
-  //   // std::string field_name, value_str, bitmap_str;
-  //   // std::getline(line_iss, field_name, '|');
-  //   // std::getline(line_iss, value_str, '|');
-  //   // std::getline(line_iss, bitmap_str, '|');
-  //   // int64_t value = std::stol(value_str);
-  //   // roaring_bitmap_ptr p(roaring_bitmap_portable_deserialize(bitmap_str.data()), roaring_bitmap_free);
-  //   // field_bitmap_[field_name][value] = std::move(p);
-  // }
   return true;
 }
 

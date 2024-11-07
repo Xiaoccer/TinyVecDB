@@ -1,8 +1,8 @@
-#include "vdb_server.h"
-#include <gen_cpp/vdb.pb.h>
+#include "server/server.h"
 #include <glog/logging.h>
 #include <memory>
-#include "vdb_service.h"
+#include "gen_cpp/vdb.pb.h"
+#include "server/service.h"
 
 namespace vdb {
 

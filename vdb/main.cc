@@ -1,6 +1,6 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include <vdb_server.h>
+#include "server/server.h"
 
 DEFINE_int32(port, 7123, "TCP Port of this server");
 DEFINE_string(listen_addr, "",

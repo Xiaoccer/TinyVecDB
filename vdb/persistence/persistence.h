@@ -1,11 +1,10 @@
 #pragma once
 
-#include <experimental/bits/fs_path.h>
 #include <cstdint>
 #include <fstream>
-#include "field_bitmap.h"
-#include "index_factory.h"
-#include "kv_storage.h"
+#include "bitmap/field_bitmap.h"
+#include "index/index_factory.h"
+#include "persistence/kv_storage.h"
 #if defined __GLIBCXX__ && __GNUC__ <= 7
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;

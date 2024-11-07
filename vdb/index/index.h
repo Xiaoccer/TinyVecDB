@@ -1,7 +1,7 @@
 #pragma once
 
 #include <roaring/roaring.h>
-#include <cstdint>
+#include <stdint.h>
 #include <memory>
 #include <vector>
 

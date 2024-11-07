@@ -1,17 +1,15 @@
-#include "vdb_service.h"
+#include "server/service.h"
 #include <brpc/closure_guard.h>
 #include <brpc/controller.h>
 #include <gen_cpp/vdb.pb.h>
 #include <glog/logging.h>
 #include <google/protobuf/stubs/status.h>
 #include <google/protobuf/util/json_util.h>
-#include <cstddef>
+#include <stddef.h>
 #include <iomanip>
 #include <sstream>
-#include "database.h"
-#include "index.h"
-#include "kv_storage.h"
-#include "util.h"
+#include "db/database.h"
+#include "util/util.h"
 
 namespace vdb {
 

@@ -1,12 +1,11 @@
 #pragma once
 
-#include <gen_cpp/vdb.pb.h>
-#include <cstdint>
-#include <optional>
-#include "field_bitmap.h"
-#include "index.h"
-#include "index_factory.h"
-#include "persistence.h"
+#include <stdint.h>
+#include "bitmap/field_bitmap.h"
+#include "gen_cpp/vdb.pb.h"
+#include "index/index.h"
+#include "index/index_factory.h"
+#include "persistence/persistence.h"
 
 namespace vdb {
 

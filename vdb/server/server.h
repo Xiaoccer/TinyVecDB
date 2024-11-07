@@ -2,8 +2,8 @@
 
 #include <brpc/server.h>
 #include <memory>
-#include "database.h"
-#include "vdb_service.h"
+#include "db/database.h"
+#include "server/service.h"
 
 namespace vdb {
 

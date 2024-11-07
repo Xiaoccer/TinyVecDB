@@ -1,11 +1,11 @@
-#include "persistence.h"
+#include "persistence/persistence.h"
 #include <glog/logging.h>
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
 #include <iomanip>
 #include <sstream>
 #include <string>
-#include "util.h"
+#include "util/util.h"
 
 namespace vdb {
 

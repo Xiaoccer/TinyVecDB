@@ -4,7 +4,6 @@
 .vscode
 build
 compile_commands.json
-proto/build
-proto/src
+protos/gen_cpp
 third_party/installed
 third_party/src
