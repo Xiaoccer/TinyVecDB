@@ -17,6 +17,16 @@ int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
   google::ParseCommandLineFlags(&argc, &argv, true);
 
+  vdb::VdbServer server;
+  vdb::VdbServer::InitOptions opts;
+  auto db_opts = &opts.db_opts;
+  db_opts->persistence_path = FLAGS_persistence_path;
+  db_opts->dim = FLAGS_vec_dim;
+  if (!server.Init(opts)) {
+    LOG(ERROR) << "Fail to init VdbServer.";
+    return -1;
+  }
+
   butil::EndPoint point;
   if (!FLAGS_listen_addr.empty()) {
     if (butil::str2endpoint(FLAGS_listen_addr.c_str(), &point) < 0) {
@@ -28,16 +38,6 @@ int main(int argc, char* argv[]) {
   }
   brpc::ServerOptions options;
   options.idle_timeout_sec = FLAGS_idle_timeout_s;
-
-  vdb::VdbServer server;
-  vdb::VdbServer::InitOptions opts;
-  auto db_opts = &opts.db_opts;
-  db_opts->persistence_path = FLAGS_persistence_path;
-  db_opts->dim = FLAGS_vec_dim;
-  if (!server.Init(opts)) {
-    LOG(ERROR) << "Fail to init VdbServer.";
-    return -1;
-  }
   if (server.Start(point, &options) != 0) {
     LOG(ERROR) << "Fail to start VdbServer";
     return -1;

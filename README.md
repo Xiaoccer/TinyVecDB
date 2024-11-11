@@ -39,6 +39,7 @@ Book
 Third-Party Libraries
 
 * faiss
+* hnswlib
 * openblas
 * brpc
 * gflags
