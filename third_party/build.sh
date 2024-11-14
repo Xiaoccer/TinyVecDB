@@ -240,6 +240,9 @@ function build_zlib() {
     cd ${TP_SOURCE_DIR}/${DIR}
     rm -rf build
     mkdir -p build
+    CFLAGS="-O3 -fPIC" \
+    CPPFLAGS="-I${TP_INCLUDE_DIR}" \
+    LDFLAGS="-L${TP_LIB_DIR}" \
     ./configure --prefix="${TP_SOURCE_DIR}/${DIR}/build"
     make -j ${PARALLEL} install
     cp -r ./build/include/* ${TP_INCLUDE_DIR}/
@@ -322,7 +325,11 @@ function build_brpc() {
     [ -d ${TP_SOURCE_DIR}/${DIR} ] || tar xvf ${TP_SOURCE_DIR}/${FILE} -C ${TP_SOURCE_DIR}
 
     cd ${TP_SOURCE_DIR}/${DIR}
-
+    PATCHED_MARK="patched_mark"
+    if [[ ! -f "${PATCHED_MARK}" ]]; then
+        patch -p1 <"${TP_PATCH_DIR}/brpc-1.11.0.patch"
+        touch "${PATCHED_MARK}"
+    fi
     sed '/set(OPENSSL_ROOT_DIR/,/)/ d' ./CMakeLists.txt >./CMakeLists.txt.bak
     mv ./CMakeLists.txt.bak ./CMakeLists.txt
     cmake -B build . -DBUILD_SHARED_LIBS=ON -DWITH_GLOG=ON -DCMAKE_INSTALL_PREFIX="${TP_INSTALL_DIR}" \
