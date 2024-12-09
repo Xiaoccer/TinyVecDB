@@ -40,5 +40,9 @@ target_link_libraries(vdb ${LINK_LIBS})
 ##########################################
 set(SOURCES main.cc)
 add_executable(main ${SOURCES})
+
+include(BuildInfo)
+BuildInfo(main)
+
 target_link_libraries(main vdb)
 set_target_properties(main PROPERTIES OUTPUT_NAME server)
