@@ -1,5 +1,6 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+#include "buildinfo.h"
 #include "server/server.h"
 
 DEFINE_int32(port, 7123, "TCP Port of this server");
@@ -16,6 +17,9 @@ int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);
   FLAGS_logtostderr = true;
   google::ParseCommandLineFlags(&argc, &argv, true);
+
+  LOG(INFO) << "BuildInfo: timestamp=" << BuildInfo::Timestamp << ",commit=" << BuildInfo::CommitSHA
+            << ",version=" << BuildInfo::Version;
 
   vdb::VdbServer server;
   vdb::VdbServer::InitOptions opts;

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+TEMPLATE_FILE=$1
+OUTPUT_FILE=$2
+PROJECT_VERSION=$3
+
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+COMMIT_SHA=$(git log -1 --pretty=format:'%h')
+
+cp ${TEMPLATE_FILE} ${OUTPUT_FILE}
+
+sed -i "s/@TIMESTAMP@/$TIMESTAMP/g" ${OUTPUT_FILE}
+sed -i "s/@COMMIT_SHA@/$COMMIT_SHA/g" ${OUTPUT_FILE}
+sed -i "s/@PROJECT_VERSION@/$PROJECT_VERSION/g" ${OUTPUT_FILE}
