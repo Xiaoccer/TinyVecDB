@@ -1,5 +1,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <iostream>
+#include <sstream>
 #include "buildinfo.h"
 #include "server/server.h"
 
@@ -12,14 +14,24 @@ DEFINE_int32(idle_timeout_s, -1,
              "read/write operations during the last `idle_timeout_s'");
 DEFINE_int32(vec_dim, 1, "Dimension of each vector");
 DEFINE_string(persistence_path, "./storage/", "Path to store persistent data");
+DEFINE_bool(show_info, false, "show version");
 
 int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);
   FLAGS_logtostderr = true;
   google::ParseCommandLineFlags(&argc, &argv, true);
 
-  LOG(INFO) << "BuildInfo: timestamp=" << BuildInfo::Timestamp << ",commit=" << BuildInfo::CommitSHA
-            << ",version=" << BuildInfo::Version;
+  std::ostringstream os;
+  os << "BuildInfo";
+  os << " timestamp=" << BuildInfo::Timestamp;
+  os << " commit=" << BuildInfo::CommitSHA;
+  os << " version=" << BuildInfo::Version;
+  if (FLAGS_show_info) {
+    std::cout << os.str();
+    return 0;
+  }
+
+  LOG(INFO) << os.str();
 
   vdb::VdbServer server;
   vdb::VdbServer::InitOptions opts;
